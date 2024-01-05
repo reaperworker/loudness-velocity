@@ -44,7 +44,7 @@ C:\Users\<someone>\AppData\Roaming\REAPER\Effects\000\loudness_velocity
    ![005](https://github.com/reaperworker/loudness-velocity/assets/155607404/51deae8c-577d-4621-9d3a-ff1a0944ea83)
    ![006](https://github.com/reaperworker/loudness-velocity/assets/155607404/85716f19-d52d-4b69-b86a-b065c86db8d2)
 5. レンダリングのドライランを実行します。  
-   [File]->[Render]
+   [File]->[Render]   
    ![007](https://github.com/reaperworker/loudness-velocity/assets/155607404/2eb29092-17c7-440f-aba9-8bfd89b762c1)
    ![008](https://github.com/reaperworker/loudness-velocity/assets/155607404/4920c205-5147-4dc1-9960-bc41e08dfb4a) 
 6. loudness_velocityの画面で測定結果を保存します。  
