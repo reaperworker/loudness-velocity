@@ -1,0 +1,147 @@
+desc: 000 Loudness Avg. at each Velocity
+
+@init
+ext_noinit=1;
+ext_nodenorm=1;
+gfx_ext_retina=max(gfx_ext_retina,1);
+
+function init(chidx)
+(
+  this.chan=chidx;
+  this.wt = chidx < 3 || num_ch < 6 ? 1 : chidx == 3 ? 0 : sqrt(2);
+  this.f1p1=this.f1p2=this.f2p1=this.f2p2=0;
+  this.pkval=this.hipkval=this.clips=0;
+  this.ch_lufs_sum=this.ch_rms_sum=0;
+
+  this.h00 = this.h01 = this.h02 = this.h03 = this.h04 = this.h05 = this.h06 = this.h07 =
+  this.h08 = this.h09 = this.h10 = this.h11 = this.h12 = this.h13 = this.h14 = this.h15 = 0;
+);
+
+function proc(lspl)
+  local(pspl f1p0 f2p0)
+  instance(wt ch_rms_sum ch_lufs_sum pkval hipkval clips
+           f1p1 f1p2 f2p1 f2p2)
+  global(a_peak)
+(
+    pspl=abs(lspl);
+    pspl > pkval ? (
+      pkval=pspl;
+      pspl > hipkval ? (
+        hipkval=pspl;
+        a_peak = max(a_peak,pspl);
+      );
+    );
+);
+
+function ResetPeak()
+(
+  ch0.init(0);
+  a_peak = 0;
+  a_peak_db = -150;
+);
+function ResetAVG()
+(
+  a_vel = 0;
+  a_counter=0;
+  a_sum = 0;
+  a_avg = -150;
+  a_avg_db = -150;
+);
+C127=127;
+function ResetRecords()
+(
+  i=0;
+  loop(C127,
+    i+=1;
+    a_records[i]=-150;
+  );
+  a_key = 0;
+);
+
+ResetPeak();
+ResetAVG();
+ResetRecords();
+
+@block
+a_peak_db = a_peak > 0 ? log(a_peak)*20/log(10) : -150;
+while
+( midirecv(ts,msg1,msg23) ? 
+(
+  m=msg1&240;
+  vel=(msg23/256)|0;
+  note=msg23&127;
+  m == 9*16 && vel > 0 && vel < 128 ? 
+  (
+    note == 3 ? (
+      a_records[a_vel] = a_avg_db;
+      ResetAVG();
+    );
+    note == 2 ? (
+      ResetPeak();
+      ResetAVG();
+      ResetRecords();
+    );
+    note == 1 ? (
+      a_counter = a_counter + 1;
+      a_sum = a_sum + a_peak;
+      a_avg = a_sum / a_counter;
+      a_avg_db = a_avg > 0 ? log(a_avg)*20/log(10) : -150;
+      ResetPeak();
+    );
+    note > 3 ? (
+      a_vel = vel;
+      a_key = note;
+    );
+  );
+  midisend(ts,msg1,msg23);
+);
+);
+
+@sample
+ch0.proc(spl0);
+
+@gfx 1050 720
+
+gfx_setfont(1, "Arial", 32);
+// gfx_setfont(1, "OCR-B", 32);
+gfx_r = 0.2;
+gfx_g = 0.8;
+gfx_b = 0.6;
+gfx_x = 15;
+gfx_y = 10;
+gfx_drawstr( sprintf(#, "Velocity : %d", a_vel ) );
+gfx_x = 215;
+gfx_y = 10;
+gfx_drawstr( sprintf(#, "Peak : %+.2f", a_peak_db ) );
+gfx_x = 415;
+gfx_y = 10;
+gfx_drawstr( sprintf(#, "Count : %d", a_counter ) );
+gfx_x = 615;
+gfx_y = 10;
+gfx_drawstr( sprintf(#, "Avg. : %+.2f", a_avg_db ) );
+gfx_x = 815;
+gfx_y = 10;
+gfx_drawstr( sprintf(#, "Key  : %d", a_key ) );
+
+gfx_setfont(1, "Arial", 24);
+// gfx_setfont(1, "OCR-B", 24);
+i=0;j=0;k=0;
+loop(C127,
+  i+=1;
+  j+=1;
+  j > 19 ? (k+=1);
+  j > 19 ? (j=0);
+  gfx_x = 30 + 140*k;
+  gfx_y = 80 + 30*j;
+  gfx_drawstr( sprintf(#, "%3d: %+.2f", i, a_records[i] ) );
+);
+
+@serialize
+file_var(0,C127);
+i=0;
+loop(C127,
+  i+=1;
+  file_var(0,a_records[i]);
+);
+file_var(0,a_key);
+
