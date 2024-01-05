@@ -2,7 +2,7 @@
 - loudness_velocity  
 ヴェロシティ毎のラウドネスを測定する Reaper の JS プラグインです。  
 [ReaJS](https://www.reaper.fm/reaplugs/) は VST プラグインとして利用できるので、他の DAW でも動作すると思います。  
-**第一チャンネルのみを測定する簡易なツールです。音源セット時にL+Rが第一チャンネルの入力となるよう注意してください。**
+**第一チャンネルLのみを測定する簡易なツールです。音源の出力 L+R がツールのLに入力されるようにしてください。**
 - decoder.xlsx  
 上記 JS プラグインの測定結果は特殊なフォーマットで保存されるため、そのままでは利用できません。  
 このツールを使って測定結果を復元します。同時にグラフも表示されます。  
@@ -33,3 +33,29 @@ C:\Users\<someone>\AppData\Roaming\REAPER\Effects\000\loudness_velocity
 - C#-1(001) 最大値の初期化
 
 ### 測定手順
+1. テンプレートをコピーします。Reaperを起動し、コピーしたファイルを読み込みます。
+2. 第二トラックに目的の音源をロードします。   
+   ![001](https://github.com/reaperworker/loudness-velocity/assets/155607404/b22405fd-cf8d-4292-9954-f288fd84353f)
+3. L+Rが第二チャンネルの出力となるようにします。   
+   ![002](https://github.com/reaperworker/loudness-velocity/assets/155607404/782fad04-c6d0-4d39-af90-62ba1829bf84)
+   ![003](https://github.com/reaperworker/loudness-velocity/assets/155607404/2b03db26-8c35-4961-8b9e-645a5d9e4608)
+   ![004](https://github.com/reaperworker/loudness-velocity/assets/155607404/e0b0b1be-0077-4376-93db-9feb8c01996a)
+4. 第三トラックのloudness_velocityの画面を表示しておきます。
+   ![005](https://github.com/reaperworker/loudness-velocity/assets/155607404/51deae8c-577d-4621-9d3a-ff1a0944ea83)
+   ![006](https://github.com/reaperworker/loudness-velocity/assets/155607404/85716f19-d52d-4b69-b86a-b065c86db8d2)
+5. レンダリングのドライランを実行します。  
+   [File]->[Render]
+   ![007](https://github.com/reaperworker/loudness-velocity/assets/155607404/2eb29092-17c7-440f-aba9-8bfd89b762c1)
+   ![008](https://github.com/reaperworker/loudness-velocity/assets/155607404/4920c205-5147-4dc1-9960-bc41e08dfb4a) 
+6. loudness_velocityの画面で測定結果を保存します。  
+   ![009](https://github.com/reaperworker/loudness-velocity/assets/155607404/0af2beaf-34dc-4234-ab56-9d76db77cf51)
+   ![010](https://github.com/reaperworker/loudness-velocity/assets/155607404/30d51669-74b9-4e67-a9a1-36f3d72cd89f)
+7. 測定結果は次のファイルに保存されています。メモ帳で開きます。
+   ```
+   C:\Users\<someone>\AppData\Roaming\REAPER\presets\js-000_loudness_velocity.ini
+   ```
+8. 次の箇所が保存されたデータです。クリップボードにコピーします。  
+   ![011](https://github.com/reaperworker/loudness-velocity/assets/155607404/dea22289-3fe6-458e-96b9-92f7908cd2d4)
+9. decoder.xlsxを適当なファイルにコピーし、そのシートのセルB2にペースとします。  
+   ![012](https://github.com/reaperworker/loudness-velocity/assets/155607404/492c4f6b-b3dc-4e83-8fc8-6992b245ebeb)
+   C列がヴェロシティK列が測定結果L列は測定結果の最大値を0dBとした値です。
