@@ -1,7 +1,7 @@
 ### 各ファイルについて
 - loudness_velocity  
 ヴェロシティ毎のラウドネスを測定する Reaper の JS プラグインです。  
-[ReaJS](https://www.reaper.fm/reaplugs/) は VST プラグインとして利用できるので他の DAW でも動作するはずです。
+[ReaJS](https://www.reaper.fm/reaplugs/) は VST プラグインとして利用できるので他の DAW でも動作すると思います。
 - decoder.xlsx  
 上記 JS プラグインの測定結果は特殊なフォーマットで保存されるため、そのままでは利用できません。  
 このツールを使って測定結果を復元します。同時にグラフも表示します。
