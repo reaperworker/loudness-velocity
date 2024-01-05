@@ -58,4 +58,4 @@ C:\Users\<someone>\AppData\Roaming\REAPER\Effects\000\loudness_velocity
    ![011](https://github.com/reaperworker/loudness-velocity/assets/155607404/dea22289-3fe6-458e-96b9-92f7908cd2d4)
 9. decoder.xlsxを適当なファイルにコピーし、そのシートのセルB2にペースとします。  
    ![012](https://github.com/reaperworker/loudness-velocity/assets/155607404/492c4f6b-b3dc-4e83-8fc8-6992b245ebeb)
-   C列がヴェロシティK列が測定結果L列は測定結果の最大値を0dBとした値です。
+   C列がヴェロシティ、K列が測定結果、L列は最大値を0dBとした調整した値です。
